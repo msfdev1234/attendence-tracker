@@ -1,38 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Userdashboard from "./Screens/User/StudentDashboard";
+import Admindashboard from "./screens/admin/AdminDashboard";
+
+import Login from "./Screens/Common/Login.Jsx";
+import CoursesScreen from "./Screens/User/NavScreens/CoursesScreen";
+import DashboardScreen from "./Screens/User/NavScreens/DashboardScreen";
+import SettingsScreen from "./Screens/User/NavScreens/SettingsScreen";
+import AnalyticsScreen from "./Screens/User/NavScreens/AnalyticsScreen";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p className='read-the-docs'>
-        How are you ?
-      </p>
-    </>
-  )
+	return (
+		<Router>
+			<Routes>
+				<Route path="/login" element={<Login />} />
+				<Route path="/" element={<Login />} />
+				<Route path="/userdashboard" element={<Userdashboard />}>
+					<Route index element={<DashboardScreen />} />
+					<Route path="welcome" element={<DashboardScreen />} />
+					<Route path="my-courses" element={<CoursesScreen />} />
+					<Route path="analytics" element={<AnalyticsScreen />} />
+					<Route path="settings" element={<SettingsScreen />} />
+				</Route>
+				<Route path="/admindashboard" element={<Admindashboard />} />
+			</Routes>
+		</Router>
+	);
 }
 
-export default App
+export default App;
