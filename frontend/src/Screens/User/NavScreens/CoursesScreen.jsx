@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { courses } from "../../../services/course.data";
 import { useState } from "react";
-import distanceBetweenTwoPoints from "../../../services/util";
+//import distanceBetweenTwoPoints from "../../../services/util";
 //import { courses } from "../../../data/course.data"; // Adjust the path as needed
 
 // Styling for the overall container of the course cards
@@ -90,20 +90,7 @@ const CoursesScreen = () => {
 				(position) => {
 					const { latitude, longitude } = position.coords;
 					console.log(position);
-					const dist = distanceBetweenTwoPoints(
-						latitude,
-						longitude,
-						40.861061, // Professor's latitude
-						-73.863876 // Professor's longitude
-					);
-
-					if (dist <= 20) {
-						setAttendance((prev) => ({ ...prev, [course.id]: true }));
-						alert("Attendance marked successfully!");
-					} else {
-						alert("You need to be in class to mark attendance.");
-					}
-					setDistanceFromProfessor(dist);
+					
 				},
 				(error) => {
 					alert(`Error getting location: ${error.message}`);

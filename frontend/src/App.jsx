@@ -3,6 +3,7 @@ import Userdashboard from "./Screens/User/StudentDashboard";
 import Admindashboard from "./screens/admin/AdminDashboard";
 
 import Login from "./Screens/Common/Login.Jsx";
+import Signup from "./Screens/Common/Signup.jsx";
 import CoursesScreen from "./Screens/User/NavScreens/CoursesScreen";
 import DashboardScreen from "./Screens/User/NavScreens/DashboardScreen";
 import SettingsScreen from "./Screens/User/NavScreens/SettingsScreen";
@@ -14,6 +15,7 @@ function App() {
 			<Routes>
 				<Route path="/login" element={<Login />} />
 				<Route path="/" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
 				<Route path="/userdashboard" element={<Userdashboard />}>
 					<Route index element={<DashboardScreen />} />
 					<Route path="welcome" element={<DashboardScreen />} />
