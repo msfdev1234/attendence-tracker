@@ -90,7 +90,6 @@ const CoursesScreen = () => {
 				(position) => {
 					const { latitude, longitude } = position.coords;
 					console.log(position);
-					
 				},
 				(error) => {
 					alert(`Error getting location: ${error.message}`);

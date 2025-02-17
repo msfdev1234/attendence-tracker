@@ -26,7 +26,10 @@ const Signup = () => {
 		setLoading(true);
 
 		try {
-			const res = await axios.post("http://localhost:3000/api/users/register", formData);
+			const res = await axios.post(
+				"http://localhost:3000/api/users/register",
+				formData
+			);
 			alert("Signup successful!");
 			navigate("/login");
 		} catch (err) {
@@ -42,20 +45,56 @@ const Signup = () => {
 				<Logo src="public/images/yu_katz_w_1.png" alt="Your Logo" />
 				<Title>Sign Up</Title>
 
-				<Input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
-				<Input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
-				<Input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-				<Input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+				<Input
+					type="text"
+					name="firstName"
+					placeholder="First Name"
+					value={formData.firstName}
+					onChange={handleChange}
+					required
+				/>
+				<Input
+					type="text"
+					name="lastName"
+					placeholder="Last Name"
+					value={formData.lastName}
+					onChange={handleChange}
+					required
+				/>
+				<Input
+					type="email"
+					name="email"
+					placeholder="Email"
+					value={formData.email}
+					onChange={handleChange}
+					required
+				/>
+				<Input
+					type="password"
+					name="password"
+					placeholder="Password"
+					value={formData.password}
+					onChange={handleChange}
+					required
+				/>
 
-				<Select name="userType" value={formData.userType} onChange={handleChange}>
+				<Select
+					name="userType"
+					value={formData.userType}
+					onChange={handleChange}
+				>
 					<option value="student">Student</option>
 					<option value="professor">Professor</option>
 					<option value="admin">Admin</option>
 				</Select>
 
-				<Button type="submit" disabled={loading}>{loading ? "Signing Up..." : "Sign Up"}</Button>
+				<Button type="submit" disabled={loading}>
+					{loading ? "Signing Up..." : "Sign Up"}
+				</Button>
 
-				<LoginLink onClick={() => navigate("/login")}>Already have an account? Log in</LoginLink>
+				<LoginLink onClick={() => navigate("/login")}>
+					Already have an account? Log in
+				</LoginLink>
 				{error && <ErrorMessage>{error}</ErrorMessage>}
 			</SignupForm>
 		</Container>

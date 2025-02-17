@@ -1,7 +1,8 @@
 // src/Screens/User/StudentDashboard.jsx or a similar file
 import styled from "styled-components";
-import Sidebar from "../../Components/Sidebar";
+
 import { Outlet } from "react-router-dom"; // Assuming React Router v6
+import Sidebar from "../components/Sidebar-user";
 
 const LayoutContainer = styled.div`
 	display: flex;

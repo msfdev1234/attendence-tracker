@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Userdashboard from "./Screens/User/StudentDashboard";
-import Admindashboard from "./screens/admin/AdminDashboard";
+import Userdashboard from "./user/screens/StudentDashboard.jsx";
+import Admindashboard from "./admin/screens/AdminDashboard.jsx";
 
 import Login from "./Screens/Common/Login.Jsx";
 import Signup from "./Screens/Common/Signup.jsx";
-import CoursesScreen from "./Screens/User/NavScreens/CoursesScreen";
-import DashboardScreen from "./Screens/User/NavScreens/DashboardScreen";
-import SettingsScreen from "./Screens/User/NavScreens/SettingsScreen";
-import AnalyticsScreen from "./Screens/User/NavScreens/AnalyticsScreen";
+import CoursesScreen from "./user/screens/NavScreens/CoursesScreen.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import DashboardScreen from "./user/screens/NavScreens/DashboardScreen.jsx";
+import SettingsScreen from "./user/screens/NavScreens/SettingsScreen.jsx";
+import AnalyticsScreen from "./user/screens/NavScreens/AnalyticsScreen.jsx";
 
 function App() {
 	return (

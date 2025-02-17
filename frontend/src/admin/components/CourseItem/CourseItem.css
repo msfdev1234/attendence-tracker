@@ -1,0 +1,7 @@
+.card-header {
+	font-size: 18px; /* Ensures header text size is optimal */
+}
+
+.card-body {
+	font-size: 16px; /* Slightly smaller text in the body for detail information */
+}
