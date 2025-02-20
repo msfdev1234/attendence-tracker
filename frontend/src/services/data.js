@@ -1,17 +1,206 @@
 const dummyCourses = [
 	{
-		lectureTitle: "Introduction to Computer Science",
-		CRN: "12345",
-		instructor: "John Doe",
-		startTime: "09:00 AM",
-		endTime: "10:30 AM",
-		buildingNumber: "5",
-		campus: "Main Campus",
-		startDate: new Date(2023, 8, 1),
-		endDate: new Date(2023, 12, 15),
-		weekdays: ["Monday", "Wednesday", "Friday"],
+		lectureTitle: "Numerical Methods",
+		subject: "AIM",
+		courseNumber: "5003",
+		CRN: "92747",
+		instructor: "Youshan Zhang",
+		email: "youshan.zhang@yu.edu",
+		startTime: "8:30 AM",
+		endTime: "09:40 PM",
+		buildingNumber: "B1",
+		campus: "Beren",
+		seatsAvailable: {
+			$numberInt: "30",
+		},
+		startDate: {
+			$date: {
+				$numberLong: "1724630400000",
+			},
+		},
+		endDate: {
+			$date: {
+				$numberLong: "1734220800000",
+			},
+		},
+		weekdays: ["Monday", "Wednesday", "Thursday", "Sunday", "Tuesday"],
 		term: "Fall",
+		degree: "Graduate",
+		section: "A",
 		classType: "Face to Face",
+		latitude: {
+			$numberDouble: "40.73061",
+		},
+		longitude: {
+			$numberDouble: "-73.935242",
+		},
+		__v: {
+			$numberInt: "0",
+		},
+		students: [],
+	},
+
+	{
+		lectureTitle: "Neural Networks and Deep Learning",
+		subject: "AIM",
+		courseNumber: "5007",
+		CRN: "92772",
+		instructor: "Youshan Zhang",
+		email: "youshan.zhang@yu.edu",
+		startTime: "02:00 PM",
+		endTime: "05:30 PM",
+		buildingNumber: "B1",
+		campus: "Beren",
+		seatsAvailable: {
+			$numberInt: "30",
+		},
+		startDate: {
+			$date: {
+				$numberLong: "1725148800000",
+			},
+		},
+		endDate: {
+			$date: {
+				$numberLong: "1734220800000",
+			},
+		},
+		weekdays: ["Wednesday"],
+		term: "Fall",
+		degree: "Graduate",
+		section: "A",
+		classType: "Face to Face",
+		latitude: {
+			$numberDouble: "40.73061",
+		},
+		longitude: {
+			$numberDouble: "-73.935242",
+		},
+		__v: {
+			$numberInt: "0",
+		},
+		students: [],
+	},
+
+	{
+		lectureTitle: "Capstone for Artificial Intelligence and Machine Learning",
+		subject: "AIM",
+		courseNumber: "5008",
+		CRN: "92774",
+		instructor: "Youshan Zhang",
+		email: "youshan.zhang@yu.edu",
+		startTime: "12:30 PM",
+		endTime: "04:30 PM",
+		buildingNumber: "B1",
+		campus: "Beren",
+		seatsAvailable: {
+			$numberInt: "30",
+		},
+		startDate: {
+			$date: {
+				$numberLong: "1725148800000",
+			},
+		},
+		endDate: {
+			$date: {
+				$numberLong: "1734220800000",
+			},
+		},
+		weekdays: ["Monday", "Thursday"],
+		term: "Fall",
+		degree: "Graduate",
+		section: "A",
+		classType: "Online",
+		latitude: {
+			$numberDouble: "40.73061",
+		},
+		longitude: {
+			$numberDouble: "-73.935242",
+		},
+		__v: {
+			$numberInt: "0",
+		},
+		students: [],
+	},
+
+	{
+		lectureTitle: "SpcTpcs:Reinforcement Learning",
+		subject: "AIM",
+		courseNumber: "5014",
+		CRN: "92773",
+		instructor: "David Li",
+		email: "david.li@yu.edu",
+		startTime: "05:30 PM",
+		endTime: "07:30 PM",
+		buildingNumber: "B1",
+		campus: "Beren",
+		seatsAvailable: {
+			$numberInt: "30",
+		},
+		startDate: {
+			$date: {
+				$numberLong: "1724630400000",
+			},
+		},
+		endDate: {
+			$date: {
+				$numberLong: "1734220800000",
+			},
+		},
+		weekdays: ["Monday", "Tuesday"],
+		term: "Spring",
+		degree: "Graduate",
+		section: "A",
+		classType: "Face to Face",
+		latitude: {
+			$numberDouble: "40.73061",
+		},
+		longitude: {
+			$numberDouble: "-73.935242",
+		},
+		__v: {
+			$numberInt: "0",
+		},
+		students: [],
+	},
+
+	{
+		lectureTitle: "Computational Statistics",
+		subject: "AIM",
+		courseNumber: "5019",
+		CRN: "92780",
+		instructor: "David Li",
+		email: "david.li@yu.edu",
+		startTime: "05:30 PM",
+		endTime: "07:30 PM",
+		buildingNumber: "B1",
+		campus: "Beren",
+		seatsAvailable: {
+			$numberInt: "30",
+		},
+		startDate: {
+			$date: {
+				$numberLong: "1725148800000",
+			},
+		},
+		endDate: {
+			$date: {
+				$numberLong: "1734220800000",
+			},
+		},
+		weekdays: ["Thursday"],
+		term: "Summer",
+		degree: "Undergraduate",
+		section: "A",
+		classType: "Face to Face",
+		latitude: {
+			$numberDouble: "40.73061",
+		},
+		longitude: {
+			$numberDouble: "-73.935242",
+		},
+		__v: {
+			$numberInt: "0",
+		},
 		students: [],
 	},
 ];

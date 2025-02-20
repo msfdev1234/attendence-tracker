@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import { courses } from "../../../services/course.data";
+import { courses } from "../../../../services/course.data";
 import { useState } from "react";
+import CourseItem from "../../../components/courseItem/CourseItem";
 //import distanceBetweenTwoPoints from "../../../services/util";
 //import { courses } from "../../../data/course.data"; // Adjust the path as needed
 
+import "./CoursesScreen.css";
+import dummyCourses from "../../../../services/data";
 // Styling for the overall container of the course cards
 const CourseContainer = styled.div`
 	background: #f9f9f9;
@@ -102,29 +105,23 @@ const CoursesScreen = () => {
 	};
 
 	return (
-		<>
-			{courses.map((course) => (
-				<CourseContainer key={course.id}>
-					<CourseTitle>{course.name}</CourseTitle>
-					<CourseDescription>{course.description}</CourseDescription>
-					<CourseInfo>
-						<ProfessorName>Professor: {course.professor}</ProfessorName>
-						<CurrentLocation>
-							Current distance ={" "}
-							{distanceFromProfessor
-								? `${distanceFromProfessor} meters`
-								: "Calculating..."}
-						</CurrentLocation>
-						<AttendanceButton
-							onClick={() => handleMarkAttendance(course)}
-							disabled={attendance[course.id]}
-						>
-							{attendance[course.id] ? "Attendance Marked" : "Mark Attendance"}
-						</AttendanceButton>
-					</CourseInfo>
-				</CourseContainer>
-			))}
-		</>
+		<div className="m-0 p-0 w-100 h-100 bg-grey ">
+			<div className="row top-bar-courses-screen header border rounded-1 p-2 flex-row d-flex justify-content-center align-items-center">
+				<div className="col-4 d-flex justify-content-center">
+					<h4 className="p-2">My Courses</h4>
+				</div>
+
+				<div className="col-4 d-flex justify-content-center">
+					<button className="btn btn-primary">Register</button>
+				</div>
+			</div>
+
+			<div className="row card p-3 mt-2 border-0">
+				{dummyCourses.map((course) => (
+					<CourseItem key={course.CRN} course={course}></CourseItem>
+				))}
+			</div>
+		</div>
 	);
 };
 

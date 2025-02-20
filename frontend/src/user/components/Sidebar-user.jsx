@@ -24,6 +24,7 @@ const Logo = styled.h1`
 const LinkContainer = styled.div`
 	display: flex;
 	flex-direction: column;
+	margin-top: ${({ collapsed }) => (collapsed ? "10px" : "20px")};
 	gap: 1rem;
 `;
 

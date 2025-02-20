@@ -4,7 +4,7 @@ import Admindashboard from "./admin/screens/AdminDashboard.jsx";
 
 import Login from "./Screens/Common/Login.Jsx";
 import Signup from "./Screens/Common/Signup.jsx";
-import CoursesScreen from "./user/screens/NavScreens/CoursesScreen.jsx";
+import CoursesScreen from "./user/screens/NavScreens/CoursesScreen/CoursesScreen.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DashboardScreen from "./user/screens/NavScreens/DashboardScreen.jsx";
 import SettingsScreen from "./user/screens/NavScreens/SettingsScreen.jsx";
