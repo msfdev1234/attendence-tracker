@@ -2,26 +2,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import authenticateUser from "../../services/userData.JS";
 import { useState } from "react";
-import { getCoordinates, getCurrentLocation } from '../../services/util';
-
-const address = getCurrentLocation()
-    .then(location => {
-        // Pass the location (coordinates) to getCoordinates function
-        return getCoordinates({ lat: location.lat, lng: location.lng });
-    })
-    .then(coords => {
-        console.log("Coordinates:", coords);
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
-getCoordinates(address)
-    .then(coords => {
-        console.log("Coordinates:", coords);
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
 
 const Login = () => {
 	const [email, setEmail] = useState("");

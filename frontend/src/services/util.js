@@ -33,7 +33,7 @@ const getCoordinates = async (address = null) => {
 
         if (data.results.length > 0) {
             const { lat, lng } = data.results[0].geometry.location;
-            return { lat, lng };
+            return { lat, lng }; // Returning the coordinates
         } else {
             throw new Error("No results found for address");
         }
@@ -42,6 +42,7 @@ const getCoordinates = async (address = null) => {
         throw error;
     }
 };
+
 
 const getCurrentLocation = () => {
     return new Promise((resolve, reject) => {

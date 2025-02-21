@@ -33,6 +33,12 @@
 	border-bottom-right-radius: 10px;
 }
 
+.card-footer.flex {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .btn-success {
 	font-size: 0.8em; /* Smaller button size */
 	letter-spacing: normal; /* Remove extra letter-spacing */
