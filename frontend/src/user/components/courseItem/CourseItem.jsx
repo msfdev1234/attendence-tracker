@@ -15,7 +15,7 @@ const CourseItem = (props) => {
 		<div className="container my-2">
 			<div className="card course-card">
 				<div className="card-header bg-primary text-white">
-					<h2 className="card-title">{props.course.lectureTitle}</h2>
+					<h3 className="card-title">{props.course.lectureTitle}</h3>
 					<h6 className="card-subtitle mb-2">
 						{props.course.instructor} | CRN: {props.course.CRN}
 					</h6>

@@ -17,7 +17,7 @@ const Content = styled.div`
 	flex-grow: 1; // Ensures it takes up the remaining space
 	display: flex;
 	flex-direction: column;
-
+	margin-left: ${({ marginLeft }) => marginLeft};
 	background-color: aliceblue;
 `;
 
@@ -28,7 +28,7 @@ const StudentDashboard = () => {
 
 			<Content className="ms-3">
 				<div className="row card mb-2 p-3 d-flex flex-row justify-content-between">
-					<div className="col-3 d-flex flex-row">
+					<div className="col-lg-3 col-md-5 col-sm-4 d-flex flex-row">
 						<div className="input-group rounded col-1">
 							<input
 								type="search"
@@ -44,9 +44,11 @@ const StudentDashboard = () => {
 						</span>
 					</div>
 
-					<div className="col-3 d-flex flex-row justify-content-end align-items-center">
-						<FontAwesomeIcon icon={faUser} />
-						<h7 className="ms-2">My Account</h7>
+					<div className="col-lg-3 col-md-5 col-sm-5 d-flex flex-row justify-content-end align-items-center">
+						<div>
+							<FontAwesomeIcon icon={faUser} />
+							<h7 className="ms-2">My Account</h7>
+						</div>
 					</div>
 				</div>
 				<Outlet /> {/* This will render the matched child route components */}
