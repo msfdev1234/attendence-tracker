@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import authenticateUser from "../../services/userData.JS";
 import { useState } from "react";
+import dummyCourses from "../../services/data";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
@@ -17,10 +18,18 @@ const Login = () => {
 
 		if (user.isAuthenticated) {
 			localStorage.setItem("user", JSON.stringify(user));
+
 			setCurrentUser(user);
 			console.log("Logged in user:", user);
 			// Navigate based on user's role
-			navigate(user.role === "admin" ? "/admindashboard" : "/userdashboard");
+			// navigate(user.role === "admin" ? "/admindashboard" : "/userdashboard");
+			if (user.role === "professor") {
+				navigate("/professordashboard");
+			} else if (user.role === "student") {
+				navigate("/userdashboard");
+			} else if (user.role === "admin") {
+				navigate("/admindashboard");
+			}
 		} else {
 			alert("Invalid credentials");
 		}

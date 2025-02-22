@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import React, { useState } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { courses } from "../../../../services/course.data";
-import { useState } from "react";
+
 import CourseItem from "../../../components/courseItem/CourseItem";
 //import distanceBetweenTwoPoints from "../../../services/util";
 //import { courses } from "../../../data/course.data"; // Adjust the path as needed
@@ -80,6 +82,8 @@ const CoursesScreen = () => {
 	);
 
 	const [distanceFromProfessor, setDistanceFromProfessor] = useState();
+	const location = useLocation(); // Get location object from React Router
+	const isRegisterRoute = location.pathname.includes("/register");
 
 	const handleMarkAttendance = (course) => {
 		const geoOptions = {
@@ -106,21 +110,38 @@ const CoursesScreen = () => {
 
 	return (
 		<div className="m-0 p-0 w-100 h-100 bg-grey ">
-			<div className="row top-bar-courses-screen header border rounded-1 p-2 flex-row d-flex justify-content-center align-items-center">
-				<div className="col-4 d-flex justify-content-center">
-					<h4 className="p-2">My Courses</h4>
-				</div>
+			{!isRegisterRoute && ( // Conditionally render the main content if not on the register route
+				<>
+					<div className="row  top-bar-courses-screen header border rounded-1 p-2 flex-row d-flex justify-content-center align-items-center">
+						<div className="col-4 d-flex justify-content-center">
+							<h4 className="p-2">My Courses</h4>
+						</div>
 
-				<div className="col-4 d-flex justify-content-center">
-					<button className="btn btn-primary">Register</button>
-				</div>
-			</div>
+						<div className="col-4 d-flex justify-content-center">
+							<Link to="register" className="btn btn-primary">
+								Register
+							</Link>
+						</div>
+					</div>
 
-			<div className="row card p-3 mt-2 border-0">
-				{dummyCourses.map((course) => (
-					<CourseItem key={course.CRN} course={course}></CourseItem>
-				))}
-			</div>
+					<div className="row card p-3 mt-2 border-0">
+						{dummyCourses.map((course) => (
+							<CourseItem
+								key={course.CRN}
+								course={course}
+								onMarkAttendance={() =>
+									setAttendance((prev) => ({
+										...prev,
+										[course.id]: !prev[course.id],
+									}))
+								}
+							/>
+						))}
+					</div>
+				</>
+			)}
+			{/* Render the Outlet which could be the RegisterCourses component or any other child route */}
+			<Outlet />
 		</div>
 	);
 };

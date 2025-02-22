@@ -45,7 +45,7 @@ const StudentDashboard = () => {
 					</div>
 
 					<div className="col-lg-3 col-md-5 col-sm-5 d-flex flex-row justify-content-end align-items-center">
-						<div>
+						<div style={{ cursor: "pointer" }}>
 							<FontAwesomeIcon icon={faUser} />
 							<h7 className="ms-2">My Account</h7>
 						</div>

@@ -3,7 +3,8 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 	transition: transform 0.2s ease-in-out;
 	font-size: 0.9rem; /* Smaller font size for a more compact look */
-	max-width: 700px; /* Limiting width for a more contained layout */
+	max-width: 900px;
+	width: 80%; /* Limiting width for a more contained layout */
 	margin: auto; /* Center the card in the container */
 }
 

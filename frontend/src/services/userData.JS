@@ -3,12 +3,17 @@ const users = [
 	{
 		email: "youshanzhang@mail.yu.edu",
 		password: "zhang",
-		role: "admin",
+		role: "professor",
 	},
 	{
 		email: "mazhar@mail.yu.edu",
 		password: "mazhar",
 		role: "student",
+	},
+	{
+		email: "manager@mail.yu.edu",
+		password: "manager",
+		role: "admin",
 	},
 ];
 

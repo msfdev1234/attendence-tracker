@@ -9,6 +9,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DashboardScreen from "./user/screens/NavScreens/DashboardScreen.jsx";
 import SettingsScreen from "./user/screens/NavScreens/SettingsScreen.jsx";
 import AnalyticsScreen from "./user/screens/NavScreens/AnalyticsScreen.jsx";
+import RegisterCourses from "./user/screens/NavScreens/CoursesScreen/RegisterCourses.jsx";
+import ProfessorDashboard from "./professor/ProfessorDashboard.jsx";
 
 function App() {
 	return (
@@ -20,11 +22,14 @@ function App() {
 				<Route path="/userdashboard" element={<Userdashboard />}>
 					<Route index element={<DashboardScreen />} />
 					<Route path="welcome" element={<DashboardScreen />} />
-					<Route path="my-courses" element={<CoursesScreen />} />
+					<Route path="my-courses" element={<CoursesScreen />}>
+						<Route path="register" element={<RegisterCourses />} />
+					</Route>
 					<Route path="analytics" element={<AnalyticsScreen />} />
 					<Route path="settings" element={<SettingsScreen />} />
 				</Route>
 				<Route path="/admindashboard" element={<Admindashboard />} />
+				<Route path="/professordashboard" element={<ProfessorDashboard />} />
 			</Routes>
 		</Router>
 	);
