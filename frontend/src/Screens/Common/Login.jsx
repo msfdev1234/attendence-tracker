@@ -16,22 +16,20 @@ const Login = () => {
 		event.preventDefault();
 		const user = authenticateUser(email, password);
 
-		if (user.isAuthenticated) {
-			localStorage.setItem("user", JSON.stringify(user));
+		console.log(user);
 
-			setCurrentUser(user);
-			console.log("Logged in user:", user);
-			// Navigate based on user's role
-			// navigate(user.role === "admin" ? "/admindashboard" : "/userdashboard");
-			if (user.role === "professor") {
-				navigate("/professordashboard");
-			} else if (user.role === "student") {
-				navigate("/userdashboard");
-			} else if (user.role === "admin") {
-				navigate("/admindashboard");
-			}
-		} else {
-			alert("Invalid credentials");
+		localStorage.setItem("user", JSON.stringify(user));
+
+		setCurrentUser(user);
+		console.log("Logged in user:", user);
+		// Navigate based on user's role
+		// navigate(user.role === "admin" ? "/admindashboard" : "/userdashboard");
+		if (user.role === "professor") {
+			navigate("/professordashboard");
+		} else if (user.role === "student") {
+			navigate("/userdashboard");
+		} else if (user.role === "admin") {
+			navigate("/admindashboard");
 		}
 	};
 

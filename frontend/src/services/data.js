@@ -6,8 +6,8 @@ const dummyCourses = [
 		CRN: "92747",
 		instructor: "Youshan Zhang",
 		email: "youshan.zhang@yu.edu",
-		startTime: "05:30 PM",
-		endTime: "07:30 PM",
+		startTime: "02:30 PM",
+		endTime: "05:30 PM",
 		buildingNumber: "B1",
 		campus: "Beren",
 		seatsAvailable: {
@@ -15,15 +15,16 @@ const dummyCourses = [
 		},
 		startDate: {
 			$date: {
-				$numberLong: "1724630400000",
+				$numberLong: "1704067200000",
 			},
 		},
+
 		endDate: {
 			$date: {
-				$numberLong: "1734220800000",
+				$numberLong: "1711996800000",
 			},
 		},
-		weekdays: ["Friday"],
+		weekdays: ["Monday"],
 		term: "Fall",
 		degree: "Graduate",
 		section: "A",
