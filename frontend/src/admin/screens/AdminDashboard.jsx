@@ -1,69 +1,55 @@
 // src/Screens/Admin/AdminDashboard.jsx
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 
-import "./AdminDashboard.css";
-import { act } from "react";
-import ListItem from "../components/ListItem";
+import Navbar from "components/navbar";
 import CoursesScreenAdmin from "./nav-screens/CourseScreenAdmin/CoursesScreenAdmin";
+import { logout } from "../../services/user";
+
+const navbarItems = [
+  {
+    name: "Home",
+  },
+  {
+    name: "Courses",
+  },
+  {
+    name: "Students",
+  },
+  {
+    name: "Settings",
+  },
+  {
+    name: "Logout",
+  },
+];
 
 const AdminDashboard = () => {
-	const [activeTab, setActiveTab] = useState("Home");
+  const [activeTab, setActiveTab] = React.useState("Home");
 
-	const onHomeButtonClickHandler = () => {
-		setActiveTab("Home");
-	};
+  const onTabClickHandler = (tab) => {
+    if (tab === "Logout") {
+      logout();
+      // Redirect to login screen
+      window.location.href = "/login";
+      return;
+    }
+    setActiveTab(tab);
+  };
 
-	const onManageCoursesButtonClickHandler = () => {
-		setActiveTab("ManageCourses");
-	};
-
-	const onStudentsButtonClickHandler = () => {
-		setActiveTab("Students");
-	};
-
-	const onSettingsButtonClickHandler = () => {
-		setActiveTab("Settings");
-	};
-
-	return (
-		<div className="container-fluid">
-			<div className="row">
-				<div className="col-12 admin-nav-bar">
-					<ListItem
-						onClick={onHomeButtonClickHandler}
-						isActiveTab={activeTab === "Home" ? true : false}
-					>
-						Home
-					</ListItem>
-
-					<ListItem
-						onClick={onManageCoursesButtonClickHandler}
-						isActiveTab={activeTab === "ManageCourses" ? true : false}
-					>
-						Manage Courses
-					</ListItem>
-					<ListItem
-						onClick={onStudentsButtonClickHandler}
-						isActiveTab={activeTab === "Students" ? true : false}
-					>
-						Students
-					</ListItem>
-					<ListItem
-						onClick={onSettingsButtonClickHandler}
-						isActiveTab={activeTab === "Settings" ? true : false}
-					>
-						Settings
-					</ListItem>
-				</div>
-			</div>
-			<div className="content-admin-dashboard">
-				<CoursesScreenAdmin />
-			</div>
-
-			<div></div>
-		</div>
-	);
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar
+        navbarHeader="Admin Dashboard"
+        tabs={navbarItems}
+        activeTab={activeTab}
+        onTabClickHandler={onTabClickHandler}
+      />
+      <div className="container mx-auto mt-6">
+        {activeTab === "Home" && <CoursesScreenAdmin />}
+        {/* Add other components for different tabs here */}
+      </div>
+    </div>
+  );
 };
 
 export default AdminDashboard;

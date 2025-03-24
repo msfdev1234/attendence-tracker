@@ -1,14 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-	font-family: Avenir-Roman, sans-serif;
-	margin: 0;
-
-	padding: 0;
+  font-family: Avenir-Roman, sans-serif;
+  margin: 0;
+  padding: 0;
 }

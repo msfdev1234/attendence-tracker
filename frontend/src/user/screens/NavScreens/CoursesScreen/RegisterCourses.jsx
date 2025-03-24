@@ -1,98 +1,67 @@
-import React, { useState } from "react";
+import React from "react";
+
+import { H1 } from "components/typography/Heading";
+import CourseList from "components/course/CourseList";
 import { useNavigate } from "react-router-dom";
-import "./RegisterCourses.css"; // make sure your CSS is properly imported
-import dummyCourses, { currentStudent } from "../../../../services/data";
+import Button from "../../../../components/button/Button";
+import * as registerCourseService from "../../../../services/studentCourse";
+import { serverTimestamp } from "firebase/firestore";
 
-const courses = dummyCourses;
+const ProfessorCourses = () => {
+  const navigate = useNavigate();
 
-const RegisterCourses = () => {
-	const navigate = useNavigate();
-	const [registeredCourses, setRegisteredCourses] = useState([]);
+  const [registeredCourses, setRegisteredCourses] = React.useState({});
 
-	const handleBack = () => {
-		navigate(-1);
-	};
+  const registerCourse = async (studentId, courseId) => {
+    setRegisteredCourses((prevState) => ({
+      ...prevState,
+      [courseId]: "loading",
+    }));
 
-	const handleRegister = (course) => {
-		// Prevent duplicate entries
-		if (!registeredCourses.find((c) => c.CRN === course.CRN)) {
-			setRegisteredCourses((prev) => [...prev, course]);
-		} else {
-			alert("This course has already been added!");
-		}
-	};
+    const data = {
+      studentId,
+      courseId,
+      createdAt: serverTimestamp(),
+    };
 
-	const confirmRegistration = () => {
-		registeredCourses.forEach((course) => {
-			const courseToUpdate = dummyCourses.find((c) => c.CRN === course.CRN);
-			if (courseToUpdate) {
-				courseToUpdate.students.push(currentStudent);
-				console.log("Updated course with new student list:", courseToUpdate);
-			}
-		});
+    try {
+      await registerCourseService.registerCourse(data);
+      setRegisteredCourses((prevState) => ({
+        ...prevState,
+        [courseId]: "success",
+      }));
+    } catch (error) {
+      setRegisteredCourses((prevState) => ({
+        ...prevState,
+        [courseId]: "error",
+      }));
+      console.log("🚀 ~ registerCourse ~ error:", error);
+    }
+  };
 
-		// Optionally reset the registered courses list
-		setRegisteredCourses([]);
+  return (
+    <>
+      <div className="mb-4">
+        <div className="flex align-center justify-between">
+          <H1>Register Courses</H1>
 
-		// Optionally navigate to another page or give feedback
-		alert("Registration confirmed!");
-	};
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/user/dashboard/my-courses")}
+          >
+            <span>Go Back</span>
+          </Button>
+        </div>
+      </div>
 
-	return (
-		<div className="container-register-courses mt-5">
-			<div className="row mb-3">
-				<div className="col-12">
-					<button className="btn btn-secondary" onClick={handleBack}>
-						&larr; Back
-					</button>
-					<h2 className="d-inline-block ms-3">Register Courses</h2>
-				</div>
-			</div>
-			<div className="course-list-container">
-				<div className="list-group">
-					{courses.map((course) => (
-						<div key={course.CRN} className="list-group-item">
-							<div className="d-flex w-100 justify-content-between">
-								<h5 className="mb-1">{course.lectureTitle}</h5>
-								<button
-									className="btn btn-primary"
-									onClick={() => handleRegister(course)}
-								>
-									Register
-								</button>
-							</div>
-							<p className="mb-1">CRN: {course.CRN}</p>
-							<small>Instructor: {course.instructor}</small>
-							<br />
-							<small>Building: {course.buildingNumber}</small>
-						</div>
-					))}
-				</div>
-			</div>
-			<div className="sticky-footer">
-				{registeredCourses.length > 0 && (
-					<>
-						<div className="mt-4">
-							<h4>Added Courses</h4>
-							<ul className="list-group">
-								{registeredCourses.map((course, index) => (
-									<li key={index} className="list-group-item">
-										{course.lectureTitle} - {course.instructor}
-									</li>
-								))}
-							</ul>
-						</div>
-						<button
-							className="btn btn-success btn-success-register-courses w-100 mt-3"
-							onClick={confirmRegistration}
-						>
-							Confirm Registration
-						</button>
-					</>
-				)}
-			</div>
-		</div>
-	);
+      <div className="grid grid-cols-1 gap-4">
+        <CourseList
+          registerCourse={registerCourse}
+          registeredCourses={registeredCourses}
+        />
+      </div>
+    </>
+  );
 };
 
-export default RegisterCourses;
+export default ProfessorCourses;

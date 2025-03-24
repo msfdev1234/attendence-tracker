@@ -1,60 +1,42 @@
-import React, { useState } from "react";
-import "./CoursesScreenAdmin.css";
-import AddCourseScreenAdmin from "../AddCourseScreenAdmin/AddCourseScreenAdmin"; // Correct the path as needed
-import CourseItem from "../../../components/CourseItem/CourseItem"; // Correct the path as needed
-import dummyCourses from "../../../../services/data"; // Correct the path as needed
+import React from "react";
+
+import { Button } from "components/button";
+import { H1 } from "components/typography/Heading";
+import CourseList from "../../../../components/course/CourseList";
+import AddCourseScreenAdmin from "../AddCourseScreenAdmin/AddCourseScreenAdmin";
 
 const CoursesScreenAdmin = () => {
-	const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [showAddCourseModal, setShowAddCourseModal] = React.useState(false);
+  const [newCourse, setNewCourse] = React.useState(null);
 
-	const [coursesList, setCoursesList] = useState(dummyCourses);
-	const [open, setOpen] = React.useState(false);
+  // Function to add a new course dynamically
+  const addCourseHandler = (newCourse) => {
+    setNewCourse(newCourse);
+    setShowAddCourseModal(false); // Close modal after adding
+  };
 
-	// Function to add a new course to the list
-	const addCourseHandler = (newCourse) => {
-		setCoursesList((currentCourses) => [...currentCourses, newCourse]);
-	};
-	const handleShowModal = () => {
-		setShowAddCourseModal(true);
-	};
+  return (
+    <>
+      <div className="mb-4">
+        <div className="flex align-center justify-between">
+          <H1>Courses</H1>
+          <Button variant="primary" onClick={() => setShowAddCourseModal(true)}>
+            <span>Add Course</span>
+          </Button>
+        </div>
+      </div>
 
-	const handleCloseModal = () => {
-		setShowAddCourseModal(false);
-	};
+      <div className="grid grid-cols-1 gap-4">
+        <CourseList newCourse={newCourse} />
+      </div>
 
-	const handleClose = () => {
-		setOpen(false);
-	};
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
-
-	return (
-		<div>
-			<div className="row container-course-screen">
-				<div className="col-6 heading-courses">
-					<h3>Courses</h3>
-					<button className="btn btn-primary" onClick={handleShowModal}>
-						Add Course
-					</button>
-				</div>
-			</div>
-			<div className="row content-course-screen">
-				<div className="col-6">
-					{coursesList.map((course) => (
-						<CourseItem key={course.CRN} course={course} />
-					))}
-				</div>
-			</div>
-			{showAddCourseModal && (
-				<AddCourseScreenAdmin
-					addCourse={addCourseHandler}
-					handleClose={handleCloseModal}
-				/>
-			)}
-		</div>
-	);
+      <AddCourseScreenAdmin
+        addCourse={addCourseHandler}
+        handleClose={() => setShowAddCourseModal(false)}
+        isOpen={showAddCourseModal}
+      />
+    </>
+  );
 };
 
 export default CoursesScreenAdmin;
