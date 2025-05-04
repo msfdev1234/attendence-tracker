@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaBook, FaChartBar, FaCog, FaBars } from "react-icons/fa";
+import { FaHome, FaBook, FaChartBar, FaCog, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
+
 
 const SidebarContainer = styled.div`
   width: ${({ collapsed }) => (collapsed ? "80px" : "250px")};
@@ -86,6 +87,9 @@ const Sidebar = () => {
         </StyledLink>
         <StyledLink to="/user/dashboard/settings" activeClassName="active">
           <FaCog /> {collapsed ? "" : "Settings"}
+        </StyledLink>
+        <StyledLink to="/" activeClassName="active">
+          <FaSignOutAlt /> {collapsed ? "" : "Logout"}
         </StyledLink>
       </LinkContainer>
     </SidebarContainer>

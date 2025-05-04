@@ -15,6 +15,7 @@ const CourseList = (props) => {
 
   const getCourses = async () => {
     const response = await courseService.getCourses(location.pathname);
+    console.log(response); // Add this line to check the response object
     setCourses(response);
     setLoading(false);
   };

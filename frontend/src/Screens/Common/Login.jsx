@@ -8,17 +8,16 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     setLoading(true);
+    setError("");
     event.preventDefault();
     try {
-      // Call the login function with email and password
       const userData = await login(email, password);
-      alert("Login successful!");
-      // Navigate based on user's role
       if (userData.userType === "professor") {
         navigate("/professor/dashboard");
       } else if (userData.userType === "student") {
@@ -27,14 +26,14 @@ const Login = () => {
         navigate("/admin/dashboard");
       } else {
         console.error("Unknown user type:", userData.userType);
+        alert("Error: Unknown user type");
       }
     } catch (err) {
       console.error("Login error:", err);
+      setError("Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }
-    // Navigate based on user's role
-    // navigate(user.role === "admin" ? "/admindashboard" : "/userdashboard");
   };
 
   return (
@@ -42,6 +41,7 @@ const Login = () => {
       <LoginForm onSubmit={handleLogin}>
         <Logo src="public\images\yu_katz_w_1.png" alt="Your Logo" />
         <Title>Sign In</Title>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Input
           type="email"
           placeholder="Email"
@@ -131,4 +131,18 @@ const SignUpLink = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: #ff4444;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 14px;
+  width: 300px;
+  padding: 10px;
+  background-color: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: 4px;
+  opacity: 1;
+`;
+
 export default Login;
+

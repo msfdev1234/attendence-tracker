@@ -100,4 +100,29 @@ export const getCourses = async () => {
   }
 };
 
+export const getCourseStudents = async (courseId) => {
+  try {
+    const studentCourseModel = new StudentCourseModel();
+    const userModel = new UserModel();
+    
+    // Get student-course relationships
+    const studentCourses = await studentCourseModel.getCourseStudents(courseId);
+    
+    // Extract student IDs
+    const studentIds = studentCourses.map(sc => sc.studentId);
+    
+    if (studentIds.length === 0) {
+      return [];
+    }
+    
+    // Get full student information
+    const students = await userModel.getUsersByIds(studentIds);
+    
+    return students;
+  } catch (error) {
+    console.error("Error fetching course students:", error);
+    throw error;
+  }
+};
+
 export { app, auth, db };
