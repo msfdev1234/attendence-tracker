@@ -76,8 +76,27 @@ const Container = styled.div`
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background: url("/path_to_background.jpg") no-repeat center center fixed;
-	background-size: cover;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url("/images/yu_zoom_1920x1080_background_2.jpg") no-repeat
+			center center fixed;
+		background-size: cover;
+		filter: brightness(0.5) blur(0px);
+		z-index: 0;
+	}
+
+	> * {
+		position: relative;
+		z-index: 1;
+	}
 `;
 
 const LoginForm = styled.form`

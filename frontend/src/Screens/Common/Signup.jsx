@@ -59,7 +59,7 @@ const Signup = () => {
 	return (
 		<Container>
 			<SignupForm onSubmit={handleSubmit}>
-				<Logo src="public/images/yu_katz_w_1.png" alt="Your Logo" />
+				<Logo src="/images/yu_katz_w_1.png" alt="Your Logo" />
 				<Title>Sign Up</Title>
 				<Input
 					type="text"
@@ -120,21 +120,42 @@ const Signup = () => {
 };
 
 const Container = styled.div`
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background: url("/path_to_background.jpg") no-repeat center center fixed;
+	background: url("/images/yu_zoom_1920x1080_background_2.jpg") no-repeat center
+		center fixed;
 	background-size: cover;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5); /* dark overlay */
+		z-index: 1;
+	}
+
+	> * {
+		position: relative;
+		z-index: 2;
+	}
 `;
 
 const SignupForm = styled.form`
 	display: flex;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+
 	flex-direction: column;
 	align-items: center;
 	padding: 20px;
 	background: rgba(0, 0, 0, 0.8);
-	border-radius: 8px;
 `;
 
 const Logo = styled.img`
