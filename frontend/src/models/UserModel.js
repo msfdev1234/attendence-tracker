@@ -37,7 +37,7 @@ class UserModel extends FirebaseBaseModel {
     return await userModel.findUserById(user.uid);
   }
 
-  static async signup(email, password, userType) {
+  static async signup(email, password, userType, firstName, lastName) {
     const auth = FirebaseBaseModel.getAuth();
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -47,7 +47,7 @@ class UserModel extends FirebaseBaseModel {
 
     const user = userCredential.user;
     const userModel = new UserModel();
-    await userModel.saveUserData(user.uid, { email, userType });
+    await userModel.saveUserData(user.uid, { email, userType, name:`${firstName} ${lastName}` , status: "pending" });
   }
 
   async saveUserData(userId, userData) {

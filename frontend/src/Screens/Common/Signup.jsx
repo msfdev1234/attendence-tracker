@@ -11,24 +11,27 @@ const Signup = () => {
     email: "",
     password: "",
     userType: "student",
+    status: "pending"
   });
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
+    // Validate email domain
+    if (!formData.email.endsWith('@mail.yu.edu')) {
+      setError('Email must be a valid YU email address (@mail.yu.edu)');
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Call the signup function with email, password, and userType
-      await signup(formData.email, formData.password, formData.userType);
+      await signup(formData.email, formData.password, formData.userType, formData.firstName, formData.lastName, formData.status);
       alert("Signup successful!");
       navigate("/login");
     } catch (err) {
@@ -39,12 +42,18 @@ const Signup = () => {
     }
   };
 
+  const handleChange = (e) => {
+    if (e.target.name === 'email') {
+      setError(null); // Clear any previous email errors
+    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <Container>
       <SignupForm onSubmit={handleSubmit}>
         <Logo src="public/images/yu_katz_w_1.png" alt="Your Logo" />
         <Title>Sign Up</Title>
-
         <Input
           type="text"
           name="firstName"
@@ -64,9 +73,11 @@ const Signup = () => {
         <Input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email (@mail.yu.edu)"
           value={formData.email}
           onChange={handleChange}
+          pattern=".+@mail\.yu\.edu$"
+          title="Please enter a valid YU email address (@mail.yu.edu)"
           required
         />
         <Input
@@ -140,7 +151,7 @@ const Input = styled.input`
 `;
 
 const Select = styled.select`
-  width: 320px;
+  width: 300px;
   height: 40px;
   padding: 8px;
   margin-bottom: 10px;

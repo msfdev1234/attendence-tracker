@@ -31,6 +31,7 @@ const CourseListItem = (props) => {
     classType = "Unknown Type",
     startDate,
     endDate,
+    stream = "N/A", // Add stream property
   } = props.course;
 
   const loggedInUser = props.loggedInUser;
@@ -75,10 +76,6 @@ const CourseListItem = (props) => {
           <span className="font-semibold">Time:</span> {startTime} to {endTime}
         </p>
         <p className="text-gray-600 mb-2">
-          <span className="font-semibold">Building:</span> {buildingNumber} on{" "}
-          {campus}
-        </p>
-        <p className="text-gray-600 mb-2">
           <span className="font-semibold">Weekdays:</span>{" "}
           {weekdays.length > 0 ? weekdays.join(", ") : "Not specified"}
         </p>
@@ -86,8 +83,7 @@ const CourseListItem = (props) => {
           <span className="font-semibold">Term:</span> {term} - {classType}
         </p>
         <p className="text-gray-600 mb-2">
-          <span className="font-semibold">Dates:</span> {formattedStartDate} to{" "}
-          {formattedEndDate}
+          <span className="font-semibold">Stream:</span> {stream}
         </p>
         {["professor", "student"].includes(loggedInUser.userType) && (
           <>

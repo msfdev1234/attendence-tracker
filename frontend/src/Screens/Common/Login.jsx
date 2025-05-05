@@ -18,6 +18,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const userData = await login(email, password);
+      // Navigate based on user's role
       if (userData.userType === "professor") {
         navigate("/professor/dashboard");
       } else if (userData.userType === "student") {
@@ -26,11 +27,14 @@ const Login = () => {
         navigate("/admin/dashboard");
       } else {
         console.error("Unknown user type:", userData.userType);
-        alert("Error: Unknown user type");
       }
     } catch (err) {
       console.error("Login error:", err);
       setError("Invalid email or password. Please try again.");
+      // Clear error message after 3 seconds
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     } finally {
       setLoading(false);
     }
@@ -137,11 +141,6 @@ const ErrorMessage = styled.div`
   text-align: center;
   font-size: 14px;
   width: 300px;
-  padding: 10px;
-  background-color: rgba(255, 68, 68, 0.1);
-  border: 1px solid #ff4444;
-  border-radius: 4px;
-  opacity: 1;
 `;
 
 export default Login;

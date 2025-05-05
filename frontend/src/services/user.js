@@ -11,9 +11,9 @@ export const login = async (email, password) => {
   }
 };
 
-export const signup = async (email, password, userType) => {
+export const signup = async (email, password, userType, firstName, lastName) => {
   try {
-    return await UserModel.signup(email, password, userType);
+    return await UserModel.signup(email, password, userType, firstName, lastName);
   } catch (error) {
     console.error("Error during signup:", error);
     throw error;

@@ -18,6 +18,7 @@ const AddCourseScreenAdmin = ({ addCourse, handleClose, isOpen }) => {
     weekdays: [],
     term: "",
     classType: "",
+    stream: "" // Add new field
   });
 
   const [instructors, setInstructors] = React.useState([]);
@@ -40,6 +41,7 @@ const AddCourseScreenAdmin = ({ addCourse, handleClose, isOpen }) => {
         weekdays: [],
         term: "",
         classType: "",
+        stream: ""
       });
       setErrors({});
     }
@@ -317,6 +319,33 @@ const AddCourseScreenAdmin = ({ addCourse, handleClose, isOpen }) => {
                 </select>
                 {errors.classType && (
                   <p className="text-red-500 text-sm">{errors.classType}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="stream"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Stream
+                </label>
+                <select
+                  className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+                  id="stream"
+                  name="stream"
+                  value={course.stream}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Stream</option>
+                  <option value="Artificial Intelligence">Artificial Intelligence</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="Data Management">Data Management</option>
+                  <option value="Digital Marketing">Digital Marketing</option>
+                  <option value="Bio-technology">Bio-technology</option>
+                </select>
+                {errors.stream && (
+                  <p className="text-red-500 text-sm">{errors.stream}</p>
                 )}
               </div>
             </form>

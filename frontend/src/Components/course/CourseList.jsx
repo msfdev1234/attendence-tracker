@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 
 const CourseList = (props) => {
   const location = useLocation();
-
   const [loading, setLoading] = React.useState(true);
   const [courses, setCourses] = React.useState([]);
   const [loggedInUser, setLoggedInUser] = React.useState(null);
@@ -43,7 +42,14 @@ const CourseList = (props) => {
       return <p>No courses available.</p>;
     }
 
-    const courseList = courses.map((course) => (
+    // Filter courses based on selected streams and terms
+    const filteredCourses = courses.filter(course => {
+      const streamMatch = !props.streamFilter?.length || props.streamFilter.includes(course.stream);
+      const termMatch = !props.termFilter?.length || props.termFilter.includes(course.term);
+      return streamMatch && termMatch;
+    });
+
+    const courseList = filteredCourses.map((course) => (
       <CourseListItem
         key={course.id}
         course={course}
@@ -58,7 +64,7 @@ const CourseList = (props) => {
       return courseList;
     }
 
-    return <TimerProvider courses={courses}>{courseList}</TimerProvider>;
+    return <TimerProvider courses={filteredCourses}>{courseList}</TimerProvider>;
   };
 
   return (
@@ -72,6 +78,8 @@ CourseList.propTypes = {
   registerCourse: PropTypes.func,
   registeredCourses: PropTypes.object,
   markAttendance: PropTypes.func,
+  streamFilter: PropTypes.arrayOf(PropTypes.string),
+  termFilter: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default CourseList;

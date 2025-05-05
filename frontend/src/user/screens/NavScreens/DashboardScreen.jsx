@@ -89,8 +89,7 @@ const DashboardScreen = () => {
 				<WelcomeText>
 					<h1>Welcome back, {userName}</h1>
 					<p>
-						You have successfully completed about 60% of your studies. Keep it
-						up!
+						Keep Up-To date with your classes and mark your attendance.
 					</p>
 				</WelcomeText>
 			</WelcomeBanner>

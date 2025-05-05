@@ -3,6 +3,7 @@ import React from "react";
 
 import Navbar from "components/navbar";
 import CoursesScreenAdmin from "./nav-screens/CourseScreenAdmin/CoursesScreenAdmin";
+import UserScreenAdmin from "./nav-screens/UserScreenAdmin";
 import { logout } from "../../services/user";
 
 const navbarItems = [
@@ -10,13 +11,7 @@ const navbarItems = [
     name: "Home",
   },
   {
-    name: "Courses",
-  },
-  {
-    name: "Students",
-  },
-  {
-    name: "Settings",
+    name: "Users",
   },
   {
     name: "Logout",
@@ -46,6 +41,7 @@ const AdminDashboard = () => {
       />
       <div className="container mx-auto mt-6">
         {activeTab === "Home" && <CoursesScreenAdmin />}
+        {activeTab === "Users" && <UserScreenAdmin />}
         {/* Add other components for different tabs here */}
       </div>
     </div>

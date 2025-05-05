@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaHome, FaBook, FaChartBar, FaCog, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 
@@ -68,7 +68,16 @@ const CollapseButton = styled.button`
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+     // Add this line to check the value of confirmLogout
+    if (confirmLogout) {
+      localStorage.clear();
+      navigate('/');
+    }
+  };
   return (
     <SidebarContainer collapsed={collapsed}>
       <CollapseButton onClick={() => setCollapsed(!collapsed)}>
@@ -88,7 +97,7 @@ const Sidebar = () => {
         <StyledLink to="/user/dashboard/settings" activeClassName="active">
           <FaCog /> {collapsed ? "" : "Settings"}
         </StyledLink>
-        <StyledLink to="/" activeClassName="active">
+        <StyledLink activeClassName="active" onClick={handleLogout}>
           <FaSignOutAlt /> {collapsed ? "" : "Logout"}
         </StyledLink>
       </LinkContainer>

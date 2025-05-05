@@ -9,13 +9,7 @@ const navbarItems = [
     name: "Home",
   },
   {
-    name: "Courses",
-  },
-  {
     name: "Students",
-  },
-  {
-    name: "Settings",
   },
   {
     name: "Logout",
