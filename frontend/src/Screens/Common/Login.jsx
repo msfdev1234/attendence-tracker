@@ -1,74 +1,93 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { login } from "../../services/user";
 import styled from "styled-components";
 
 const Login = () => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const handleLogin = async (event) => {
-		setLoading(true);
-		setError("");
-		event.preventDefault();
-		try {
-			const userData = await login(email, password);
-			// Navigate based on user's role
-			if (userData.userType === "professor") {
-				navigate("/professor/dashboard");
-			} else if (userData.userType === "student") {
-				navigate("/user/dashboard");
-			} else if (userData.userType === "admin") {
-				navigate("/admin/dashboard");
-			} else {
-				console.error("Unknown user type:", userData.userType);
-			}
-		} catch (err) {
-			console.error("Login error:", err);
-			setError("Invalid email or password. Please try again.");
+  useEffect(() => {
+    // Check if user is already logged in
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    if (userData) {
+      // Navigate based on user's role
+      if (userData.userType === "professor") {
+        navigate("/professor/dashboard");
+      } else if (userData.userType === "student") {
+        navigate("/user/dashboard");
+      } else if (userData.userType === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        console.error("Unknown user type:", userData.userType);
+      }
+    }
+  }, [navigate]);
+
+  const handleLogin = async (event) => {
+    setLoading(true);
+    setError("");
+    event.preventDefault();
+    try {
+      // Call the login function with email and password
+      const userData = await login(email, password);
+      // Navigate based on user's role
+      if (userData.userType === "professor") {
+        navigate("/professor/dashboard");
+      } else if (userData.userType === "student") {
+        navigate("/user/dashboard");
+      } else if (userData.userType === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        console.error("Unknown user type:", userData.userType);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Invalid email or password. Please try again.");
 			// Clear error message after 3 seconds
 			setTimeout(() => {
 				setError("");
 			}, 3000);
-		} finally {
-			setLoading(false);
-		}
-	};
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	return (
-		<Container>
-			<LoginForm onSubmit={handleLogin}>
-				<Logo src="public\images\yu_katz_w_1.png" alt="Your Logo" />
-				<Title>Sign In</Title>
-				{error && <ErrorMessage>{error}</ErrorMessage>}
-				<Input
-					type="email"
-					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					required
-				/>
-				<Input
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-				/>
-				<Button type="submit" disabled={loading}>
-					{loading ? "Logging In..." : "Log In"}
-				</Button>
-				<SignUpLink onClick={() => navigate("/signup")}>
-					New user? Sign up now!
-				</SignUpLink>
-			</LoginForm>
-		</Container>
-	);
+  return (
+    <Container>
+      <LoginForm onSubmit={handleLogin}>
+        <Logo src="public\images\yu_katz_w_1.png" alt="Your Logo" />
+        <Title>Sign In</Title>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <Button type="submit" disabled={loading}>
+          {loading ? "Logging In..." : "Log In"}
+        </Button>
+        <SignUpLink onClick={() => navigate("/signup")}>
+          New user? Sign up now!
+        </SignUpLink>
+      </LoginForm>
+    </Container>
+  );
 };
 
 const Container = styled.div`

@@ -1,5 +1,6 @@
 import { documentId, getDocs, orderBy, query, where } from "firebase/firestore";
 import FirebaseBaseModel from "./FirebaseBaseModel";
+import AttendanceModel from "./AttendanceModel";
 
 class CourseModel extends FirebaseBaseModel {
   constructor() {
@@ -30,10 +31,31 @@ class CourseModel extends FirebaseBaseModel {
     );
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
+    const courses = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
+    const courseIds = courses.map((course) => course.id);
+    const attendanceModel = new AttendanceModel();
+    const lastAttendance = await attendanceModel.getLastAttendance(courseIds);
+
+    return courses.map((course) => ({
+      ...course,
+      lastAttendance:
+        lastAttendance && lastAttendance[course.id]
+          ? lastAttendance[course.id]
+          : null,
+    }));
+  }
+
+  async getCourseById(id) {
+    if (!id) {
+      throw new Error("Course ID is required");
+    }
+
+    const doc = await this.findDocumentById(id);
+    return doc;
   }
 
   async getCoursesByIds(ids) {
@@ -41,7 +63,11 @@ class CourseModel extends FirebaseBaseModel {
       throw new Error("Course IDs are required");
     }
 
-    const q = query(this.collectionRef, where(documentId(), "in", ids));
+    const q = query(
+      this.collectionRef,
+      where(documentId(), "in", ids),
+      orderBy("createdAt", "desc")
+    );
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
@@ -57,7 +83,11 @@ class CourseModel extends FirebaseBaseModel {
 
     if (ids.length <= 10) {
       // Use Firestore query if the array has 10 or fewer elements
-      const q = query(this.collectionRef, where(documentId(), "not-in", ids));
+      const q = query(
+        this.collectionRef,
+        where(documentId(), "not-in", ids),
+        orderBy("createdAt", "desc")
+      );
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map((doc) => ({

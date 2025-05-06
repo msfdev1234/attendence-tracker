@@ -102,7 +102,7 @@ class FirebaseBaseModel {
     }
   }
 
-  async insertBulk(collection, dataArray) {
+  async insertBulk(dataArray) {
     if (!Array.isArray(dataArray) || dataArray.length === 0) {
       throw new Error("An array of data is required");
     }
@@ -110,6 +110,15 @@ class FirebaseBaseModel {
     return await Promise.all(
       dataArray.map((data) => addDoc(this.collectionRef, data))
     );
+  }
+
+  async updateDocument(id, data) {
+    if (!id || !data) {
+      throw new Error("Document ID and data are required");
+    }
+
+    const docRef = doc(FirebaseBaseModel.#db, this.collectionRef.path, id);
+    await setDoc(docRef, data, { merge: true });
   }
 }
 

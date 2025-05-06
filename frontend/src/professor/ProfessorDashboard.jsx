@@ -6,38 +6,38 @@ import ProfessorCourses from "./ProfessorCourses";
 import StudentsTab from "./StudentsTab"; // ← import
 
 const navbarItems = [
-	{
-		name: "Home",
-	},
-	{
-		name: "Students",
-	},
-	{
-		name: "Logout",
-	},
+  {
+    name: "Home",
+  },
+  {
+    name: "Students",
+  },
+  {
+    name: "Logout",
+  },
 ];
 
 const ProfessorDashboard = () => {
-	const [activeTab, setActiveTab] = React.useState("Home");
+  const [activeTab, setActiveTab] = React.useState("Home");
 
-	const onTabClickHandler = (tab) => {
-		if (tab === "Logout") {
-			logout();
-			// Redirect to login screen
-			window.location.href = "/login";
-			return;
-		}
-		setActiveTab(tab);
-	};
+  const onTabClickHandler = (tab) => {
+    if (tab === "Logout") {
+      logout();
+      // Redirect to login screen
+      window.location.href = "/login";
+      return;
+    }
+    setActiveTab(tab);
+  };
 
-	return (
-		<div className="min-h-screen bg-gray-100">
-			<Navbar
-				navbarHeader="Professor Dashboard"
-				tabs={navbarItems}
-				activeTab={activeTab}
-				onTabClickHandler={onTabClickHandler}
-			/>
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar
+        navbarHeader="Professor Dashboard"
+        tabs={navbarItems}
+        activeTab={activeTab}
+        onTabClickHandler={onTabClickHandler}
+      />
 
 			<div className="container mx-auto mt-6">
 				{activeTab === "Home" && <ProfessorCourses />}

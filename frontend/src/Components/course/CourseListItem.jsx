@@ -12,8 +12,8 @@ const CourseListItem = (props) => {
     timeUntilNextClass: "N/A",
     isClassInProgress: false,
     canMarkAttendance: false,
+    formattedSchedule: null,
   };
-
   const isStudentCourseRegistrationRoute =
     location.pathname === "/user/dashboard/my-courses/register";
 
@@ -29,20 +29,21 @@ const CourseListItem = (props) => {
     weekdays = [],
     term = "Unknown Term",
     classType = "Unknown Type",
+    lastAttendance = null,
     startDate,
     endDate,
-    stream = "N/A", // Add stream property
+    stream = "N/A",
   } = props.course;
 
   const loggedInUser = props.loggedInUser;
 
-  // Handle dates properly
-  const formattedStartDate = startDate
-    ? new Date(startDate).toLocaleDateString()
-    : "N/A";
-  const formattedEndDate = endDate
-    ? new Date(endDate).toLocaleDateString()
-    : "N/A";
+// Handle dates properly
+const formattedStartDate = startDate
+? new Date(startDate).toLocaleDateString()
+: "N/A";
+const formattedEndDate = endDate
+? new Date(endDate).toLocaleDateString()
+: "N/A";
 
   const getRegisterButtonLable = () => {
     const registerStatus = props.registeredCourses[courseId];
@@ -57,6 +58,31 @@ const CourseListItem = (props) => {
     }
 
     return "Register";
+  };
+
+  // For professor only
+  const hasAlreadyMarkedAttendanceForCurrentClass = () => {
+    if (!lastAttendance) return false;
+
+    const { formattedSchedule } = courseTimerData;
+
+    if (!formattedSchedule) return false;
+
+    const { date, day, startTime, endTime } = formattedSchedule;
+
+    const {
+      date: lastAttendanceDate,
+      day: lastAttendanceDay,
+      startTime: lastAttendanceStartTime,
+      endTime: lastAttendanceEndTime,
+    } = lastAttendance;
+
+    return (
+      date === lastAttendanceDate &&
+      day === lastAttendanceDay &&
+      startTime === lastAttendanceStartTime &&
+      endTime === lastAttendanceEndTime
+    );
   };
 
   return (
@@ -76,6 +102,10 @@ const CourseListItem = (props) => {
           <span className="font-semibold">Time:</span> {startTime} to {endTime}
         </p>
         <p className="text-gray-600 mb-2">
+          <span className="font-semibold">Building:</span> {buildingNumber} on{" "}
+          {campus}
+        </p>
+        <p className="text-gray-600 mb-2">
           <span className="font-semibold">Weekdays:</span>{" "}
           {weekdays.length > 0 ? weekdays.join(", ") : "Not specified"}
         </p>
@@ -93,16 +123,29 @@ const CourseListItem = (props) => {
                 Next class in: {courseTimerData.timeUntilNextClass}
               </div>
               {loggedInUser.userType === "professor" && (
-                <Button
-                  variant="secondary"
-                  onClick={() => props.markAttendance(props.course)}
-                  disabled={
-                    // !courseTimerData.isClassInProgress ||
-                    !courseTimerData.canMarkAttendance
-                  }
-                >
-                  Mark Attendance
-                </Button>
+                <div className="flex flex-col items-end">
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      props.markAttendance(
+                        props.course,
+                        courseTimerData.formattedSchedule
+                      )
+                    }
+                    disabled={
+                      // !courseTimerData.isClassInProgress ||
+                      !courseTimerData.canMarkAttendance ||
+                      hasAlreadyMarkedAttendanceForCurrentClass()
+                    }
+                  >
+                    Mark Attendance
+                  </Button>
+                  {hasAlreadyMarkedAttendanceForCurrentClass() && (
+                    <p className="text-blue-500 text-sm mt-2">
+                      Attendance already marked for the current class.
+                    </p>
+                  )}
+                </div>
               )}
 
               {loggedInUser.userType === "student" &&

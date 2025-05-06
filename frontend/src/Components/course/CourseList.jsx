@@ -7,42 +7,43 @@ import { TimerProvider } from "../../context/TimerContext";
 import { useLocation } from "react-router-dom";
 
 const CourseList = (props) => {
-	const location = useLocation();
-	const [loading, setLoading] = React.useState(true);
-	const [courses, setCourses] = React.useState([]);
-	const [loggedInUser, setLoggedInUser] = React.useState(null);
+  const location = useLocation();
+  console.log("Props", props)
+  const [loading, setLoading] = React.useState(true);
+  const [courses, setCourses] = React.useState([]);
+  const [loggedInUser, setLoggedInUser] = React.useState(null);
 
-	const getCourses = async () => {
-		const response = await courseService.getCourses(location.pathname);
-		console.log(response); // Add this line to check the response object
-		setCourses(response);
-		setLoading(false);
-	};
+  const getCourses = async () => {
+    const response = await courseService.getCourses(location.pathname);
 
-	const getLoggedInUser = async () => {
-		const user = await userService.getLoggedInUser();
-		setLoggedInUser(user);
-	};
+    setCourses(response);
+    setLoading(false);
+  };
 
-	React.useEffect(() => {
-		getCourses();
-		getLoggedInUser();
-	}, []);
+  const getLoggedInUser = async () => {
+    const user = await userService.getLoggedInUser();
+    setLoggedInUser(user);
+  };
 
-	React.useEffect(() => {
-		setCourses((prevCourses) => [props.newCourse, ...prevCourses]);
-	}, [props.newCourse]);
+  React.useEffect(() => {
+    getCourses();
+    getLoggedInUser();
+  }, []);
 
-	const getCourseList = () => {
-		if (loading) {
-			return <p>Loading courses...</p>;
-		}
+  React.useEffect(() => {
+    setCourses((prevCourses) => [props.newCourse, ...prevCourses]);
+  }, [props.newCourse]);
 
-		if (courses.length === 0) {
-			return <p>No courses available.</p>;
-		}
+  const getCourseList = () => {
+    if (loading) {
+      return <p>Loading courses...</p>;
+    }
 
-		// Filter courses based on selected streams and terms
+    if (courses.length === 0) {
+      return <p>No courses available.</p>;
+    }
+
+    // Filter courses based on selected streams and terms
 		const filteredCourses = courses.filter((course) => {
 			const streamMatch =
 				!props.streamFilter?.length ||
@@ -53,38 +54,35 @@ const CourseList = (props) => {
 		});
 
 		const courseList = filteredCourses.map((course) => (
-			<CourseListItem
-				key={course.id}
-				course={course}
-				loggedInUser={loggedInUser}
-				registerCourse={props.registerCourse}
-				registeredCourses={props.registeredCourses}
-				markAttendance={props.markAttendance}
-			/>
-		));
+      <CourseListItem
+        key={course.id}
+        course={course}
+        loggedInUser={loggedInUser}
+        registerCourse={props.registerCourse}
+        registeredCourses={props.registeredCourses}
+        markAttendance={props.markAttendance}
+      />
+    ));
+    if (loggedInUser.userType === "admin") {
+      return courseList;
+    }
 
-		if (loggedInUser.userType === "admin") {
-			return courseList;
-		}
-
-		return (
+    return (
 			<TimerProvider courses={filteredCourses}>{courseList}</TimerProvider>
 		);
-	};
+  };
 
-	return (
-		<div className="row content-course-screen">
-			<div className="col-6">{getCourseList()}</div>
-		</div>
-	);
+  return (
+    <div className="row content-course-screen">
+      <div className="col-6">{getCourseList()}</div>
+    </div>
+  );
 };
 CourseList.propTypes = {
-	newCourse: PropTypes.object,
-	registerCourse: PropTypes.func,
-	registeredCourses: PropTypes.object,
-	markAttendance: PropTypes.func,
-	streamFilter: PropTypes.arrayOf(PropTypes.string),
-	termFilter: PropTypes.arrayOf(PropTypes.string),
+  newCourse: PropTypes.object,
+  registerCourse: PropTypes.func,
+  registeredCourses: PropTypes.object,
+  markAttendance: PropTypes.func,
 };
 
 export default CourseList;

@@ -1,6 +1,6 @@
 import { H1 } from "../../../../Components/typography/Heading";
-import CourseList from "../../../../components/course/CourseList";
-import Button from "../../../../components/button/Button";
+import CourseList from "../../../../Components/course/CourseList";
+import Button from "../../../../Components/button/Button";
 import { useNavigate } from "react-router-dom";
 
 const CourseScreen = () => {

@@ -1,29 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { signup } from "../../services/user";
 
 const Signup = () => {
-	const [formData, setFormData] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		password: "",
-		userType: "student",
-		status: "pending",
-	});
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    userType: "student",
+    status: "pending",
+  });
 
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setError(null);
-		setLoading(true);
+  useEffect(() => {
+    // Check if user is already logged in
+    const userData = JSON.parse(localStorage.getItem("user"));
 
-		// Validate email domain
+    if (userData) {
+      // Navigate based on user's role
+      if (userData.userType === "professor") {
+        navigate("/professor/dashboard");
+      } else if (userData.userType === "student") {
+        navigate("/user/dashboard");
+      } else if (userData.userType === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        console.error("Unknown user type:", userData.userType);
+      }
+    }
+  }, [navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    // Validate email domain
 		if (!formData.email.endsWith("@mail.yu.edu")) {
 			setError("Email must be a valid YU email address (@mail.yu.edu)");
 			setLoading(false);
@@ -39,45 +61,38 @@ const Signup = () => {
 				formData.lastName,
 				formData.status
 			);
-			alert("Signup successful!");
-			navigate("/login");
-		} catch (err) {
-			console.error("Signup error:", err);
-			setError(err.message || "Something went wrong during signup.");
-		} finally {
-			setLoading(false);
-		}
-	};
+      alert("Signup successful!");
+      navigate("/login");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setError(err.message || "Something went wrong during signup.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	const handleChange = (e) => {
-		if (e.target.name === "email") {
-			setError(null); // Clear any previous email errors
-		}
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-	};
-
-	return (
-		<Container>
-			<SignupForm onSubmit={handleSubmit}>
-				<Logo src="/images/yu_katz_w_1.png" alt="Your Logo" />
-				<Title>Sign Up</Title>
-				<Input
-					type="text"
-					name="firstName"
-					placeholder="First Name"
-					value={formData.firstName}
-					onChange={handleChange}
-					required
-				/>
-				<Input
-					type="text"
-					name="lastName"
-					placeholder="Last Name"
-					value={formData.lastName}
-					onChange={handleChange}
-					required
-				/>
-				<Input
+  return (
+    <Container>
+      <SignupForm onSubmit={handleSubmit}>
+      <Logo src="/images/yu_katz_w_1.png" alt="Your Logo" />
+      <Title>Sign Up</Title>
+        <Input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
+          onChange={handleChange}
+          required
+        />
+        <Input
 					type="email"
 					name="email"
 					placeholder="Email (@mail.yu.edu)"
@@ -87,36 +102,36 @@ const Signup = () => {
 					title="Please enter a valid YU email address (@mail.yu.edu)"
 					required
 				/>
-				<Input
-					type="password"
-					name="password"
-					placeholder="Password"
-					value={formData.password}
-					onChange={handleChange}
-					required
-				/>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
 
-				<Select
-					name="userType"
-					value={formData.userType}
-					onChange={handleChange}
-				>
-					<option value="student">Student</option>
-					<option value="professor">Professor</option>
-					<option value="admin">Admin</option>
-				</Select>
+        <Select
+          name="userType"
+          value={formData.userType}
+          onChange={handleChange}
+        >
+          <option value="student">Student</option>
+          <option value="professor">Professor</option>
+          <option value="admin">Admin</option>
+        </Select>
 
-				<Button type="submit" disabled={loading}>
-					{loading ? "Signing Up..." : "Sign Up"}
-				</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </Button>
 
-				<LoginLink onClick={() => navigate("/login")}>
-					Already have an account? Log in
-				</LoginLink>
-				{error && <ErrorMessage>{error}</ErrorMessage>}
-			</SignupForm>
-		</Container>
-	);
+        <LoginLink onClick={() => navigate("/login")}>
+          Already have an account? Log in
+        </LoginLink>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </SignupForm>
+    </Container>
+  );
 };
 
 const Container = styled.div`

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button } from "../../../../Components/button";
 import { H1 } from "../../../../Components/typography/Heading";
-import CourseList from "../../../../components/course/CourseList";
+import CourseList from "../../../../Components/course/CourseList";
 import AddCourseScreenAdmin from "../AddCourseScreenAdmin/AddCourseScreenAdmin";
 
 const CoursesScreenAdmin = () => {

@@ -3,7 +3,7 @@ import React from "react";
 import { H1 } from "../../../../Components/typography/Heading";
 import CourseList from "../../../../Components/course/CourseList";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../../components/button/Button";
+import Button from "../../../../Components/button/Button";
 import * as registerCourseService from "../../../../services/studentCourse";
 import { serverTimestamp } from "firebase/firestore";
 

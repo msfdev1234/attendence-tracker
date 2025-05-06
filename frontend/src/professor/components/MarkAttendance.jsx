@@ -1,42 +1,134 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { serverTimestamp } from "firebase/firestore";
+import { addAttendanceDetail } from "../../services/attendanceDetail";
 import { addAttendance } from "../../services/attendance";
+import { getLoggedInUser } from "../../services/user";
+import { calculateDistance, getCurrentLocation } from "../../services/location";
 
-const MarkAttendance = ({ loading, course, students, handleClose, isOpen }) => {
+const MIN_DISTANCE_FOR_PRESENT = 100;
+
+const MarkAttendance = ({
+  loading,
+  course,
+  students,
+  courseSchedule,
+  handleClose,
+  isOpen,
+  refetchCourses,
+}) => {
   const [attendanceData, setAttendanceData] = React.useState([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [professorLocation, setProfessorLocation] = React.useState(null);
 
   React.useEffect(() => {
     if (isOpen) {
-      setAttendanceData(
-        students.map((student) => ({
-          id: student.id,
-          email: student.email,
-          attendance: "Absent",
-          remark: "",
-        }))
+      // Get professor location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
+          setProfessorLocation(location);
+          console.log("###### location", location);
+          
+          setAttendanceData(
+            students.map((student) => {
+              let status = "Absent";
+              if (location) {
+                const studentLocation = student.location;
+
+                if (studentLocation) {
+                  const distance = calculateDistance(
+                    location,
+                    studentLocation
+                  );
+
+                  if (
+                    typeof distance === "number" &&
+                    !isNaN(distance) &&
+                    distance <= MIN_DISTANCE_FOR_PRESENT
+                  ) {
+                    status = "Present";
+                  }
+                }
+              }
+
+              return {
+                id: student.id,
+                email: student.email,
+                status,
+                remark: "",
+              };
+            })
+          );
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          // Still set attendance data but mark everyone as absent since location failed
+          setAttendanceData(
+            students.map((student) => ({
+              id: student.id,
+              email: student.email,
+              status: "Absent",
+              remark: "",
+            }))
+          );
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
       );
     }
   }, [isOpen, students]);
 
+  const getCourseTimeDetails = (courseSchedule) => {
+    const { date, day, startTime, endTime } = courseSchedule;
+
+    return (
+      <div className="rounded-md shadow-sm">
+        <p className="text-sm text-gray-600">
+          {`${date} (${day}), ${startTime} - ${endTime}`}
+        </p>
+      </div>
+    );
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
+
+    // Add attendance document
+    const attendance = {
+      courseId: course.id,
+      date: courseSchedule.date,
+      day: courseSchedule.day,
+      startTime: courseSchedule.startTime,
+      endTime: courseSchedule.endTime,
+      createdAt: serverTimestamp(),
+    };
+    const createdAttendance = await addAttendance(attendance);
+
     const formData = new FormData(event.target);
     const data = attendanceData.map((entry) => {
       return {
         studentId: entry.id,
-        courseId: course.id,
-        attendance: formData.get(`attendance-${entry.id}`),
+        attendanceId: createdAttendance.id,
+        status: formData.get(`attendance-${entry.id}`),
         remark: formData.get(`remark-${entry.id}`),
         createdAt: serverTimestamp(),
       };
     });
 
-    await addAttendance(data);
+    await addAttendanceDetail(data);
     setIsSubmitting(false);
     handleClose();
+
+    // Refresh the page
+    window.location.reload();
   };
 
   return (
@@ -50,9 +142,12 @@ const MarkAttendance = ({ loading, course, students, handleClose, isOpen }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center border-b pb-3 px-6 py-4 bg-white sticky top-0 z-10">
-            <h5 className="text-xl font-semibold text-gray-800">
-              Mark Attendance
-            </h5>
+            <div>
+              <h5 className="text-xl font-semibold text-gray-800">
+                Mark Attendance For
+              </h5>
+              {courseSchedule && getCourseTimeDetails(courseSchedule)}
+            </div>
             <button
               onClick={handleClose}
               className="text-gray-500 hover:text-gray-800"
@@ -92,7 +187,7 @@ const MarkAttendance = ({ loading, course, students, handleClose, isOpen }) => {
                           <select
                             name={`attendance-${entry.id}`}
                             className="block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
-                            defaultValue={entry.attendance}
+                            defaultValue={entry.status}
                           >
                             <option value="Present">Present</option>
                             <option value="Absent">Absent</option>
@@ -119,7 +214,7 @@ const MarkAttendance = ({ loading, course, students, handleClose, isOpen }) => {
               type="submit"
               form="mark-attendance-form"
               className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700"
-              disabled={loading || isSubmitting}
+              disabled={loading || isSubmitting || attendanceData.length === 0}
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
@@ -148,6 +243,8 @@ MarkAttendance.propTypes = {
   handleClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   loading: PropTypes.bool,
+  courseSchedule: PropTypes.object,
+  refetchCourses: PropTypes.func,
 };
 
 export default MarkAttendance;

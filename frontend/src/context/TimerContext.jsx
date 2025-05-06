@@ -29,13 +29,15 @@ export const TimerProvider = ({ courses, children }) => {
       if (!course.id) return; // Skip invalid courses
 
       try {
-        const { classStartTime, classEndTime } = getNextClassTime(course);
+        const { classStartTime, classEndTime, formattedSchedule } =
+          getNextClassTime(course);
 
         if (currentTime >= classStartTime && currentTime <= classEndTime) {
           updatedTimerData[course.id] = {
             timeUntilNextClass: "Class in progress",
             isClassInProgress: true,
             canMarkAttendance: true,
+            formattedSchedule,
           };
         } else if (currentTime < classStartTime) {
           const timeDiff = classStartTime - currentTime;
@@ -53,6 +55,7 @@ export const TimerProvider = ({ courses, children }) => {
             }${minutes} mins until next class`,
             isClassInProgress: false,
             canMarkAttendance: true,
+            formattedSchedule,
           };
         } else {
           // Find the next week's class
@@ -70,6 +73,7 @@ export const TimerProvider = ({ courses, children }) => {
             timeUntilNextClass: `Next class in: ${nextClassDays} days ${nextClassHours} hrs`,
             isClassInProgress: false,
             canMarkAttendance: true,
+            formattedSchedule,
           };
         }
       } catch (error) {

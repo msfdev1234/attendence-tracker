@@ -10,6 +10,12 @@ class UserModel extends FirebaseBaseModel {
     super("users");
   }
 
+  static USER_TYPES = {
+    ADMIN: "admin",
+    PROFESSOR: "professor",
+    STUDENT: "student",
+  };
+
   async createUser(userData) {
     return await this.createDocument(userData);
   }
@@ -66,6 +72,13 @@ class UserModel extends FirebaseBaseModel {
       id: doc.id,
       ...doc.data(),
     }));
+  }
+
+  async updateUserLocation(userId, location) {
+    if (!userId || !location) {
+      throw new Error("User ID and location are required");
+    }
+    return await this.updateDocument(userId, { location });
   }
 }
 
