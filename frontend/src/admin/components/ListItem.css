@@ -1,0 +1,16 @@
+.admin-nav-active-item {
+	background-color: orange;
+	border: 2px solid black;
+	border-radius: 3px;
+	padding-left: 60px;
+	padding-right: 60px;
+	box-shadow: 1px;
+}
+
+.admin-nav-inactive-item {
+	background-color: transparent;
+	padding-left: 60px;
+	padding-right: 60px;
+	border: 0px;
+	color: white;
+}
