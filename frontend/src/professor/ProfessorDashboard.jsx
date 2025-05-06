@@ -3,6 +3,7 @@ import React from "react";
 import Navbar from "../Components/navbar";
 import { logout } from "../services/user";
 import ProfessorCourses from "./ProfessorCourses";
+import StudentsTab from "./StudentsTab"; // ← import
 
 const navbarItems = [
 	{
@@ -40,6 +41,7 @@ const ProfessorDashboard = () => {
 
 			<div className="container mx-auto mt-6">
 				{activeTab === "Home" && <ProfessorCourses />}
+				{activeTab === "Students" && <StudentsTab />} {/* ← add this */}
 				{/* Add other components for different tabs here */}
 			</div>
 		</div>

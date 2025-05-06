@@ -12,29 +12,29 @@ import RegisterCourses from "./user/screens/NavScreens/CoursesScreen/RegisterCou
 import ProfessorDashboard from "./professor/ProfessorDashboard.jsx";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="user/dashboard" element={<Userdashboard />}>
-          <Route index element={<DashboardScreen />} />
-          <Route path="welcome" element={<DashboardScreen />} />
-          <Route path="my-courses" element={<CoursesScreen />} />
-          <Route path="my-courses/register" element={<RegisterCourses />} />
-          <Route path="analytics" element={<AnalyticsScreen />} />
-          <Route path="settings" element={<SettingsScreen />} />
-        </Route>
-        <Route path="admin">
-          <Route path="dashboard" element={<Admindashboard />} />
-        </Route>
-        <Route path="professor">
-          <Route path="dashboard" element={<ProfessorDashboard />} />
-        </Route>
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route path="/login" element={<Login />} />
+				<Route path="/" element={<Login />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route path="user/dashboard" element={<Userdashboard />}>
+					<Route index element={<DashboardScreen />} />
+					<Route path="welcome" element={<DashboardScreen />} />
+					<Route path="my-courses" element={<CoursesScreen />} />
+					<Route path="my-courses/register" element={<RegisterCourses />} />
+					<Route path="analytics" element={<AnalyticsScreen />} />
+					<Route path="settings" element={<SettingsScreen />} />
+				</Route>
+				<Route path="admin">
+					<Route path="dashboard" element={<Admindashboard />} />
+				</Route>
+				<Route path="professor">
+					<Route path="dashboard" element={<ProfessorDashboard />} />
+				</Route>
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;
